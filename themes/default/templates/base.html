@@ -1,0 +1,224 @@
+{% include header.html %}
+<div class="container">
+    <div class="row template-content-page">
+        <div class="col s12 m4 l3">
+            {% for item in left_items %}
+            <div class="section">
+                <div class="card-panel z-depth-1">
+                    <div class="card light-blue lighten-1 sidebar-title">
+                        <span class="white-text sidebar-title-text"><a href="{{ item['classify_url'] }}"
+                                                                       class="white-text flow-text"
+                                                                       id="title">{{ item['classify_name'] }}</a></span>
+                    </div>
+                    <div class="row valign-wrapper">
+                        <div class="col s12">
+                            <div class="card-action">
+                                <ul class="">
+                                    {% for site_item in item['classify_item'] %}
+                                    <li><a href="{{ site_item['left_item_url'] }}" target="_blank">{{ site_item['left_item_name'] }}</a>
+                                    </li>
+                                    {% end %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% end %}
+            <div class="section">
+                <div class="card-panel z-depth-1">
+                    <div class="card light-blue lighten-1 sidebar-title">
+                        <span class="white-text sidebar-title-text"><a href="/categories.html"
+                                                                       class="white-text flow-text"
+                                                                       id="title">分类</a></span>
+                    </div>
+                    <div class="row valign-wrapper">
+                        <div class="col s12">
+                            <div class="card-action">
+                                <ul class="">
+                                    <li><a href="https://www.processon.com/network">processon</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m8 l9">
+            <!-- Modal Structure -->
+            <div id="login_model" class="modal">
+                <form method="post" name="login_form">
+                    <div class="modal-content">
+                        <h4 class="center-align"><span class="grey-text darken-4">登录</span></h4>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email" type="email" name="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="password" type="password" name="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a onclick="javascript:login_form.submit();"
+                           class="modal-action modal-close waves-effect waves-green btn-flat grey-text darken-4">提交</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal Structure -->
+            <div id="add_class_model" class="modal modal-fixed-footer">
+                <form method="post" name="add_cate_form" action="addcate">
+                    <div class="modal-content">
+                        <h4 class="center-align"><span class="grey-text darken-4">添加分类</span></h4>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="classify_name" name="classify_name" type="text" class="validate">
+                                <label for="classify_name">分类名称</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="classify_url" name="classify_url" type="text" class="validate">
+                                <label for="classify_url">分类链接</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select name="classify_parent">
+                                    <option value="" selected>父类分类</option>
+                                    {% for cate_item in right_cate %}
+                                    {% module RightCate(cate_item) %}
+                                    {% end %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a onclick="javascript:add_cate_form.submit();"
+                           class="modal-action modal-close waves-effect waves-green btn-flat grey-text darken-4">提交</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal Structure -->
+            <div id="add_site_model" class="modal">
+                <form method="post" name="add_site_form" action="addsite">
+                    <div class="modal-content">
+                        <h4 class="center-align"><span class="grey-text darken-4">添加网址</span></h4>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="site_name" type="text" name="site_name" class="validate">
+                                <label for="site_name">网址名称</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="site_url" type="text" name="site_url" class="validate">
+                                <label for="site_url">网址链接</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select name="site_type">
+                                    <option value="default" selected>普通</option>
+                                    <option value="tag">标签</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select name="site_cate">
+                                    <option value="" selected>网址分类</option>
+                                    {% for cate_item in right_classify_items %}
+                                    {% module RightCate(cate_item) %}
+                                    {% end %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a onclick="javascript:add_site_form.submit();"
+                           class="modal-action modal-close waves-effect waves-green btn-flat grey-text darken-4">提交</a>
+                    </div>
+                </form>
+            </div>
+            <div class="section">
+                <div class="card z-depth-1">
+                    <div class="card-content black-text">
+                        <span class="card-title black-text"><a href="/" class="black-text flow-text" id="title">最近常用</a></span>
+
+                        <p>
+
+                        <div class="row">
+                            <div class="col s12 m2 l1">
+                                <a>dadada</a>&nbsp;&nbsp;&nbsp;|
+                            </div>
+                            <div class="col s12 m10 l11">
+                                <span class="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a></span>
+                            </div>
+                        </div>
+                        </p>
+                        <p>
+                        <div class="row">
+                            <div class="col s12 m2 l1">
+                                <a>dadada</a>&nbsp;&nbsp;&nbsp;|
+                            </div>
+                            <div class="col s12 m10 l11">
+                                <span class="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a></span>
+                            </div>
+                        </div>
+                        </p>
+                        <p>
+
+                        <div class="row">
+                            <div class="col s12 m2 l1">
+                                <a>dadada</a>&nbsp;&nbsp;&nbsp;|
+                            </div>
+                            <div class="col s12 m10 l11">
+                                <span class="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>乌云</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>Freebuf</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a>看雪论坛</a></span>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                    <div class="card-action light-blue lighten-1">
+                        <a class="white-text text-accent-2" href="/" onclick="">wooyun zone</a><a href="/"
+                                                                                                  class="white-text">Freebuf</a>
+                    </div>
+                </div>
+            </div>
+            {% for cate_item in classify %}
+            <div class="section">
+                <div class="card z-depth-1">
+                    <div class="card-content black-text">
+                        <span class="card-title black-text"><a href="{{ cate_item['classify_url'] }}" class="black-text flow-text"
+                                                               id="title">{{ cate_item['classify_name'] }}</a></span>
+
+                        {% module GetSonCate(cate_item) %}
+                    </div>
+                    {% module GetSiteTag(cate_item) %}
+                </div>
+            </div>
+            {% end %}
+            {% if isLogin %}
+            <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+                <a class="btn-floating btn-large red">
+                    <i class="mdi-content-add">add</i>
+                </a>
+                <ul>
+                    <li><a class="btn-floating red modal-trigger" href="#add_class_model"><i
+                            class="mdi-action-list"></i></a></li>
+                    <li><a class="btn-floating yellow darken-1 modal-trigger" href="#add_site_model"><i
+                            class="mdi-content-link"></i></a></li>
+                </ul>
+            </div>
+            {% end %}
+        </div>
+    </div>
+</div>
+{% include footer.html %}

@@ -1,0 +1,6 @@
+{% if cate_item['classify_parent'] == "" %}
+<option value="{{ cate_item['_id'] }}">{{ cate_item['classify_name'] }}</option>
+{% else %}
+<option value="{{ cate_item['_id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cate_item['classify_name'] }}
+</option>
+{% end %}

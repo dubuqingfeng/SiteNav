@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <title>{% block sitetitle %}这是一个网址导航{% end %}</title>
+
+    <!-- CSS  -->
+    <link type="text/css" rel="stylesheet" href="{{ static_url('css/materialize.min.css') }}"
+          media="screen,projection"/>
+    <link href="{{ static_url('css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="{{ static_url('css/style.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">网址导航</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a class="waves-effect waves-light" href="http://sxaulab.sinaapp.com">编辑器</a></li>
+            {% if isLogin %}
+            <li><a class="waves-effect waves-light" href="#">{{ user['username'] }}</a></li>
+            <li><a class="waves-effect waves-light" href="/logout?logout=confirm">登出</a></li>
+            {% else %}
+            <li><a class="waves-effect waves-light modal-trigger" href="#login_model">登录</a></li>
+            {% end %}
+        </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+            <li><a href="#">登出</a></li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+    </div>
+</nav>

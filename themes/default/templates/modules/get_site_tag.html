@@ -1,0 +1,5 @@
+<div class="card-action light-blue">
+    {% for site_item in site_items %}
+    <a class="white-text text-accent-2" href="{{ site_item['site_url'] }}" target="_blank">{{ site_item['site_name'] }}</a>
+    {% end %}
+</div>
