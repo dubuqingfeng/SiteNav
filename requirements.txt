@@ -1,3 +1,4 @@
+bson
 pymongo
 tornado
 jinja2

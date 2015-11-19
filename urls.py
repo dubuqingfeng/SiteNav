@@ -9,4 +9,6 @@ urls = [
     (r"/", index.IndexHandler),
     (r"/login", login.LoginHandler),
     (r"/logout", login.LogoutHandler),
+    (r"/addcate", index.AddCateHandler),
+    (r"/addsite", index.AddSitehandler)
 ]

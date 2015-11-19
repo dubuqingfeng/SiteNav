@@ -2,18 +2,9 @@
 # coding=utf-8
 from bson import ObjectId, DBRef
 import tornado
-import datetime
-from base import BaseHandler, UserBaseHandler
-import configs
+from base import UserBaseHandler, UIModule
 
 __author__ = 'qingfeng'
-
-db = configs.client.sitenav
-
-users = db.user
-left_items = db.left_item
-right_classify_items = db.right_classify
-right_items = db.right_item
 
 
 class IndexHandler(UserBaseHandler):
@@ -21,12 +12,10 @@ class IndexHandler(UserBaseHandler):
         pass
 
     def get(self, *args, **kwargs):
-        username = "test"
-        print("SELECT * FROM user where name = '%s'" % username)
         # user = {"username": "Dubuqingfeng", "password": "password", "email": "1135326346@qq.com",
         #        "site_type": "public", "theme": "default", "login_time": datetime.datetime.utcnow()}
         # user_id = users.insert_one(user).inserted_id
-        user = users.find_one({"username": "Dubuqingfeng"})
+        user = self.db.user.find_one({"username": "Dubuqingfeng"})
         # left_item = {
         #     "classify_url": "http://www.baidus.csom/",
         #     "classify_name": "分类名",
@@ -40,28 +29,24 @@ class IndexHandler(UserBaseHandler):
         #         , {"left_item_url": "http://www.ts.com/", "left_item_name": "test2", "left_item_open": "target"}],
         # }
         # left_item_it = left_items.insert_one(left_item).inserted_id
-        # print(left_item_it)
+        right_classify = self.db.right_classify
 
-        right_cate = right_classify_items.find({"classify_parent": ""})
-        right_classify = right_classify_items.find()
-        left_item = left_items.find()
-        classify = right_classify_items.find({"classify_parent": ""})
-        print(right_classify)
+        right_cate = right_classify.find({"classify_parent": ""})
+        right_classify_item = right_classify.find()
+        left_item = self.db.left_item.find()
+        classify = right_classify.find({"classify_parent": ""})
 
         if self.current_user:
             self.render('base.html', isLogin=True, user=user, left_items=left_item,
-                        right_cate=right_cate, right_classify_items=right_classify, classify=classify)
+                        right_cate=right_cate, right_classify_items=right_classify_item, classify=classify)
         self.render('base.html', isLogin=False, user=user, left_items=left_item,
                     right_cate=right_cate,
-                    right_classify_items=right_classify, classify=classify)
+                    right_classify_items=right_classify_item, classify=classify)
 
 
 class AddCateHandler(UserBaseHandler):
     def data_received(self, chunk):
         pass
-
-    def get(self, *args, **kwargs):
-        print 'test'
 
     def post(self, *args, **kwargs):
         object_parent_id = ""
@@ -78,9 +63,9 @@ class AddCateHandler(UserBaseHandler):
             "classify_son": []
         }
         # 更新父类
-        right_classify_item_id = right_classify_items.insert_one(right_classify_item).inserted_id
+        right_classify_item_id = self.db.right_classify.insert_one(right_classify_item).inserted_id
         if right_classify_item_id:
-            right_classify_items.update({"_id": parent_classify_id},
+            self.db.right_classify.update({"_id": parent_classify_id},
                                         {"$push": {"classify_son": DBRef('right_classify', right_classify_item_id)}},
                                         multi=True)
             self.redirect("/")
@@ -103,24 +88,25 @@ class AddSitehandler(UserBaseHandler):
             "site_name": self.get_argument("site_name"),
             "classify_id": site_classify_item,
         }
-        right_item_id = right_items.insert_one(right_item).inserted_id
+        right_item_id = self.db.right_item.insert_one(right_item).inserted_id
         if right_item_id:
-            self.redirect("/")
+            print(right_item_id)
+            # self.redirect("/")
 
 
-class GetSonCateModule(tornado.web.UIModule):
+class GetSonCateModule(UIModule):
     def render(self, cate_item):
-        right_item = right_classify_items.find({"classify_parent": ObjectId(cate_item['_id'])})
+        right_item = self.db.right_classify.find({"classify_parent": ObjectId(cate_item['_id'])})
         return self.render_string('modules/get_cate_son.html', cate_items=right_item)
 
 
-class GetCateSiteModule(tornado.web.UIModule):
+class GetCateSiteModule(UIModule):
     def render(self, cate_item):
-        right_item = right_items.find({"classify_id": ObjectId(cate_item['_id'])})
+        right_item = self.db.right_item.find({"classify_id": ObjectId(cate_item['_id'])})
         return self.render_string('modules/get_cate_site.html', site_items=right_item)
 
 
-class GetCateTagModule(tornado.web.UIModule):
+class GetCateTagModule(UIModule):
     def render(self, cate_item):
-        right_item = right_items.find({"classify_id": ObjectId(cate_item['_id']), "site_type": {"$ne": "default"}})
+        right_item = self.db.right_item.find({"classify_id": ObjectId(cate_item['_id']), "site_type": {"$ne": "default"}})
         return self.render_string('modules/get_site_tag.html', site_items=right_item)

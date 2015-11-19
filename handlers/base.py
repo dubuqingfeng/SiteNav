@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 # coding=utf-8
 import tornado.web
+import configs
 
 __author__ = 'qingfeng'
 
 
 class BaseHandler(tornado.web.RequestHandler):
+    def __init__(self, application, request, **kwargs):
+        super(BaseHandler, self).__init__(application, request, **kwargs)
+        self.db = configs.client.sitenav
+
     def data_received(self, chunk):
         pass
 
@@ -30,3 +35,12 @@ class UserBaseHandler(BaseHandler):
     def get(self, *args, **kwargs):
         print('test')
 
+
+class UIModule(tornado.web.UIModule):
+
+    def __init__(self, handler):
+        super(UIModule, self).__init__(handler)
+        self.db = configs.client.sitenav
+
+    def render(self, *args, **kwargs):
+        pass
