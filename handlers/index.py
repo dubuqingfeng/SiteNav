@@ -90,8 +90,8 @@ class AddSitehandler(UserBaseHandler):
         }
         right_item_id = self.db.right_item.insert_one(right_item).inserted_id
         if right_item_id:
-            print(right_item_id)
-            # self.redirect("/")
+            # print(right_item_id)
+            self.redirect("/")
 
 
 class GetSonCateModule(UIModule):
