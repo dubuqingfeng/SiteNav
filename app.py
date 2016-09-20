@@ -25,5 +25,5 @@ if __name__ == "__main__":
         },
         **settings
     )
-    application.listen(8888)
+    application.listen(80)
     tornado.ioloop.IOLoop.current().start()
