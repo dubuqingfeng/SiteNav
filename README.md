@@ -16,7 +16,7 @@ sample:[](http://sitenav.link)
 
 ##致谢
 
-tornado
-materialize
++ [tornado](http://www.tornadoweb.org/en/stable/)
++ [materialize](http://materializecss.com/)
 
 ##关于
